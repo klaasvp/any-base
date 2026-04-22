@@ -1,6 +1,6 @@
 {
     "name": "any-base-module",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Converter from any base to other any base",
     "type": "module",
     "main": "./dist/index.js",
