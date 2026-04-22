@@ -1,5 +1,5 @@
 {
-    "name": "any-base",
+    "name": "any-base-module",
     "version": "2.0.0",
     "description": "Converter from any base to other any base",
     "type": "module",
@@ -20,7 +20,9 @@
         "hex",
         "bin",
         "oct",
-        "any"
+        "any",
+        "esm",
+        "module"
     ],
     "repository": {
         "type": "git",
