@@ -26,7 +26,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/klaasvp/any-base"
+        "url": "git+https://github.com/klaasvp/any-base.git"
     },
     "author": {
         "name": "Klaas Van Parys",
