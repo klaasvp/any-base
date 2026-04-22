@@ -14,9 +14,12 @@ export function anyBase <T extends TAlphabet, TDst extends TAlphabetType<T>> (sr
     }
 };
 
+// Predefined alphabets for compatibility with existing code
 anyBase.BIN = '01';
 anyBase.OCT = '01234567';
 anyBase.DEC = '0123456789';
 anyBase.HEX = '0123456789abcdef';
+
+Object.freeze(anyBase);
 
 export default anyBase;

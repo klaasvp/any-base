@@ -1,6 +1,7 @@
 import { ucs2 } from "punycode";
 import { describe, expect, test } from "vitest";
 import Converter from "../src/converter";
+import { anyBase } from "../src";
 
 // Standard numeric string tests
 describe("Numeric string", () => {
@@ -48,8 +49,17 @@ describe("UTF-8 Codepoints", () => {
     });
 });
 
-describe("Should fail", () => {
+describe("Edge cases", () => {
     test("non-alphabetic digits", () => {
         expect(() => new Converter('01', '0123456789abcdef').convert('01thisshouldntwork')).toThrow(/contains of non-alphabetic digits/);
+    });
+
+    test("same alphabet", () => {
+        const converter = new Converter('0123456789', '0123456789');
+        expect(converter.convert('123456789')).toEqual('123456789');
+    });
+
+    test("immutable anybase", () => {
+        expect(() => (anyBase as any).BIN = 'notbin').toThrow();
     });
 });
