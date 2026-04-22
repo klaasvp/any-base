@@ -1,55 +1,72 @@
-# README #
+# any-base-module
 
-The library allows you to convert any large numbers in any number base to another number base. The base is determined by specifying the alphabet. So is full freedom
+[![NPM](https://nodei.co/npm/any-base-module.svg?style=flat&data=n,v,d&color=blue)](https://www.npmjs.com/package/any-base-module)
 
-[![NPM](https://nodei.co/npm/any-base.png?downloads=true&stars=true)](https://nodei.co/npm/any-base/)
+Convert numbers between any base/alphabet — including UTF-8 codepoints. The base is determined by the alphabet you provide, giving you full flexibility.
 
-## Installation ##
+Based on the original [any-base](https://www.npmjs.com/package/any-base) from Kamil Harasimowicz.
 
-```
-npm install any-base --save
-```
 
-## API ##
-
-### AnyBase() ###
+## Installation
 
 ```
-converterFunction = anyBase(sourceAlphabet, destinationAlphabet);
+npm install any-base-module --save
 ```
 
-#### Parameters ####
+## Usage
 
-* {String} __sourceAlphabet__      digits from smallest to the largest
-* {String} __destinationAlphabet__ digits from smallest to the largest
+### API — `anyBase()`
 
-#### Return Values ####
+Create a reusable converter function by specifying source and destination alphabets:
 
-Returns __function__ that converts the number of source base to the destination
+```ts
+import { anyBase, alphabets } from "any-base-module";
 
-### Convert() ###
+const dec2hex = anyBase(alphabets.DEC, alphabets.HEX);
+const shortId = anyBase(alphabets.DEC, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+!@#$^");
+const longId  = anyBase("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+!@#$^", alphabets.DEC);
 
+dec2hex("123456");      // "1e240"
+shortId("1234567890");  // "PtmIa"
+longId("PtmIa");        // "1234567890"
 ```
-converterFunction(number)
+
+#### Parameters
+
+| Parameter              | Type     | Description                         |
+| ---------------------- | -------- | ----------------------------------- |
+| `srcAlphabet`          | `string \| ReadonlyArray<number>` | Source alphabet, digits smallest → largest |
+| `dstAlphabet`          | `string \| ReadonlyArray<number>` | Destination alphabet, digits smallest → largest |
+
+#### Return value
+
+A converter **function** `(number) => convertedNumber` that converts a value from the source base to the destination base.
+
+### Built-in alphabets
+
+| Constant        | Legacy constant        | Alphabet              |
+| --------------- | --------------- | --------------------- |
+| `alphabets.BIN` | `anyBase.BIN`   | `01`                  |
+| `alphabets.OCT` | `anyBase.OCT`   | `01234567`            |
+| `alphabets.DEC` | `anyBase.DEC`   | `0123456789`          |
+| `alphabets.HEX` | `anyBase.HEX`   | `0123456789abcdef`    |
+
+### UTF-8 codepoint support
+
+Alphabets can also be arrays of Unicode codepoints, allowing emoji or other multi-byte characters as digits:
+
+```ts
+import { ucs2 } from "punycode";
+import { anyBase } from "any-base-module";
+
+const dec2moji = anyBase(
+  ucs2.decode("0123456789"),
+  ucs2.decode("😀😃😄😁😆😅😂🤣☺😊😇🙂🙃😉😌😍😘😗😙😚😋😜😝😛🤑🤗🤓😎😏😒😞😔😟😕🙁☹😣😖😫😩😤😠😡😶😐😑😯😦😧😮😲😵😳😱😨😰😢😥😴🤤😭😓😪🙄")
+);
+
+ucs2.encode(dec2moji(ucs2.decode("11614"))); // "😄😱😞"
 ```
 
-#### Parameters ####
+## License
 
-* {String} __number__ number of source base
-
-#### Return Values ####
-
-Returns number of destonation base
-
-## Example ##
-
-```js
-var anyBase = require('any-base'),
-dec2hex = anyBase(anyBase.DEC, anyBase.HEX),
-shortId = anyBase(anyBase.DEC, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+!@#$^'),
-longId  = anyBase('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+!@#$^', anyBase.DEC);
-
-dec2hex('123456'); // return: '1E240'
-shortId('1234567890'); // return: 'PtmIa'
-longId('PtmIa'); // return: '1234567890'
-```
+MIT
